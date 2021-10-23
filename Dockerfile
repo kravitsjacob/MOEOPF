@@ -15,4 +15,5 @@ RUN gcc -shared -fPIC -O3 -o libborg.so borg.c mt19937ar.c -lm
 # Run optimization
 ADD MOEOPF_io /MOEOPF/MOEOPF_io
 COPY optimization.py .
-ENTRYPOINT ["conda", "run", "-n", "MOEOPF_env", "python3", "-u", "optimization.py"]
+COPY config.ini .
+ENTRYPOINT ["conda", "run", "-n", "MOEOPF_env", "python3", "-u", "optimization.py", "-c", "config.ini"]
