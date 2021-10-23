@@ -1,0 +1,9 @@
+name: MOEOPF_env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pandas
+  - pandapower
+prefix: C:\Users\kravi\.conda\envs\MOEOPF_env
