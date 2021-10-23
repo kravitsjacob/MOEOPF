@@ -8,13 +8,13 @@ from borg import *
 
 
 # Global Vars
-pathto_data = 'MOEOPF_io'
-pathto_generator_limits = os.path.join(pathto_data, 'Input', 'generator_limits.csv')
-pathto_cost_coef = os.path.join(pathto_data, 'Input', 'costs.csv')
-pathto_emit_coef = os.path.join(pathto_data, 'Input', 'emissions.csv')
-pathto_bus_limits = os.path.join(pathto_data, 'Input', 'bus_limits.csv')
-pathto_runtime = os.path.join(pathto_data, 'Output', 'runtime.txt')
-pathto_results = os.path.join(pathto_data, 'Output', 'results.csv')
+path_to_data = 'MOEOPF_io'
+path_to_generator_limits = os.path.join(path_to_data, 'Input', 'generator_limits.csv')
+path_to_cost_coef = os.path.join(path_to_data, 'Input', 'costs.csv')
+path_to_emit_coef = os.path.join(path_to_data, 'Input', 'emissions.csv')
+path_to_bus_limits = os.path.join(path_to_data, 'Input', 'bus_limits.csv')
+path_to_runtime = os.path.join(path_to_data, 'Output', 'runtime.txt')
+path_to_results = os.path.join(path_to_data, 'Output', 'results.csv')
 
 
 def solve_power_flow(*vars):
@@ -47,7 +47,7 @@ def get_gen_constraint(df):
     # Initialize Vars
     cons = 0.0
     # Import Generation Lim
-    lim = pd.read_csv(pathto_generator_limits, index_col=0)
+    lim = pd.read_csv(path_to_generator_limits, index_col=0)
     # Exceeds Maximum Capacity
     cons = cons + float(sum(x for x in df['p_mw']/100 - lim['max'] if x > 0))  # Unit Power
     cons = cons + float(abs(sum(x for x in df['p_mw']/100 - lim['min'] if x < 0)))
@@ -64,7 +64,7 @@ def get_cost(df):
     # Initialize Vars
     obj = 0.0
     # Import Cost Coefficients
-    cost_df = pd.read_csv(pathto_cost_coef, index_col=0)
+    cost_df = pd.read_csv(path_to_cost_coef, index_col=0)
     # Compute Cost
     term1 = cost_df['a']
     term2 = cost_df['b'] * (df['p_mw']/100)
@@ -83,7 +83,7 @@ def get_emission(df):
     # Initialize Vars
     obj = 0.0
     # Import Emissions Coefficients
-    emit_df = pd.read_csv(pathto_emit_coef, index_col=0)
+    emit_df = pd.read_csv(path_to_emit_coef, index_col=0)
     # Compute Emissions
     term1 = 0.01 * emit_df['alpha']
     term2 = 0.01 * emit_df['beta'] * (df['p_mw']/100)
@@ -103,7 +103,7 @@ def get_system_voltage_violation(df):
     # Initialize Vars
     obj = 0.0
     # Import Emissions Coefficients
-    emit_df = pd.read_csv(os.path.join(pathto_bus_limits), index_col=0)
+    emit_df = pd.read_csv(os.path.join(path_to_bus_limits), index_col=0)
     # Exceeds Voltage Limits
     obj = obj + float(sum(x for x in df['vm_pu'] - emit_df['max'] if x > 0))
     obj = obj + float(abs(sum(x for x in df['vm_pu'] - emit_df['min'] if x < 0)))
@@ -146,7 +146,7 @@ def main():
         {'maxEvaluations': 20000,
          'initialPopulationSize': 100,
          'runtimeformat': 'borg',
-         'frequency': 1000, 'runtimefile': pathto_runtime}
+         'frequency': 1000, 'runtimefile': path_to_runtime}
     )
     print('Success: Run Optimization')
     return 0
