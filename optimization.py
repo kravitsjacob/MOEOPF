@@ -1,5 +1,7 @@
 # Import Packages
 import os
+import configparser
+import argparse
 import numpy as np
 import pandas as pd
 import pandapower as pp
@@ -7,14 +9,48 @@ import pandapower.networks
 from borg import *
 
 
-# Global Vars
-path_to_data = 'MOEOPF_io'
-path_to_generator_limits = os.path.join(path_to_data, 'Input', 'generator_limits.csv')
-path_to_cost_coef = os.path.join(path_to_data, 'Input', 'costs.csv')
-path_to_emit_coef = os.path.join(path_to_data, 'Input', 'emissions.csv')
-path_to_bus_limits = os.path.join(path_to_data, 'Input', 'bus_limits.csv')
-path_to_runtime = os.path.join(path_to_data, 'Output', 'runtime.txt')
-path_to_results = os.path.join(path_to_data, 'Output', 'results.csv')
+def input_parse():
+    """
+    Parse inputs to global vars
+    @return:
+    """
+    # Global vars used in simulation
+    global path_to_data
+    global path_to_generator_limits
+    global path_to_cost_coef
+    global path_to_emit_coef
+    global path_to_bus_limits
+    global path_to_runtime
+
+    # Local vars
+    config_inputs = configparser.ConfigParser()
+    argparse_inputs = argparse.ArgumentParser()
+
+    # Command line arguments (these get priority)
+    argparse_inputs.add_argument(
+        '-c',
+        '--config_file',
+        type=str,
+        action='store',
+        help='Path to configuration file',
+        required=True
+    )
+
+    # Parse arguments
+    argparse_inputs = argparse_inputs.parse_args()
+
+    # Parse config file
+    config_inputs.read(argparse_inputs.config_file)
+
+    # Store inputs
+    path_to_data = config_inputs['MAIN IO']['data']
+    path_to_generator_limits = os.path.join(path_to_data, config_inputs['INPUT']['path_to_generator_limits'])
+    path_to_cost_coef = os.path.join(path_to_data, config_inputs['INPUT']['path_to_cost_coef'])
+    path_to_emit_coef = os.path.join(path_to_data, config_inputs['INPUT']['path_to_emit_coef'])
+    path_to_bus_limits = os.path.join(path_to_data, config_inputs['INPUT']['path_to_bus_limits'])
+    path_to_runtime = os.path.join(path_to_data, config_inputs['OUTPUT']['path_to_runtime'])
+
+    return 0
 
 
 def solve_power_flow(*vars):
@@ -135,6 +171,8 @@ def simulation(*vars):
 
 
 def main():
+    # Import arguments
+    input_parse()
     # Problem setup
     Configuration.seed(1008)
     borg = Borg(numberOfVariables=5, numberOfObjectives=3, numberOfConstraints=1, function=simulation)
