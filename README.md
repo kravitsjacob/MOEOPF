@@ -34,6 +34,7 @@ This tutorial assumes the use of gitbash or a Unix-like terminal with github com
 1. Clone the repository using `$git clone https://github.com/kravitsjacob/MOEOPF.git`
 2. Download and Run Docker Desktop. For more information on Docker visit: https://docs.docker.com/desktop/. To ensure 
 that it is installed correctly go to the command prompt/terminal and enter `$docker --version`
+3. Get a [Borg MOEA license](http://borgmoea.org/) and place the required files in the `borg_files` folder. Your tree should look EXACTLY as the one above.
 3. Change to the current working directory using command prompt/terminal $ cd <insert_path_to_/MOEOPF>
 4. Build the docker image by running `$docker build --tag optimization .`
 5. Run the image and mount output data by running `$docker run -v /$(pwd)/MOEOPF_io/output:/MOEOPF/MOEOPF_io/output optimization`
