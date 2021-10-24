@@ -2,7 +2,7 @@
 ```
 .
 │   .gitignore
-│   config.ini: Arguments useed in `optimization.py`
+│   config.ini: Arguments used in `optimization.py`
 │   Dockerfile: Dockerfile to run `optimization.py`
 │   LICENSE
 │   MOEOPF_env.yml: Conda environment to run `optimization.py`
@@ -41,4 +41,15 @@ that it is installed correctly go to the command prompt/terminal and enter `$doc
      * Pre-computed outputs have been supplied in `/MOEOPF_io/ouput`
 
 # III. Citing this work
-Look [here](https://osf.io/fd3mj/) for more information about this work.
+Look [here](https://osf.io/fd3mj/) for more information about this work. Please use the following citation
+```
+@article{kravits_multi_2021,
+         title = {Multi-Objective Optimal Power Flow Considering Emissions and Voltage Violations},
+         url = {http://kyrib.com/Papers/Kravits_PES_GM_2021.pdf},
+         journal = {Proceedings of the 2021 Power and Energy Systems General Meeting},
+         author = {Kravits, Jacob and Baker, Kyri and Kasprzyk, Joseph},
+         year = {2021},
+}
+```
+
+
